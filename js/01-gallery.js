@@ -3,12 +3,12 @@ import { galleryItems } from './gallery-items.js';
 
 console.log(galleryItems);
 
-const GalleryContainer = document.querySelector('.gallery');
+const galleryContainer = document.querySelector('.gallery');
 const itemsForGallery = createGallery(galleryItems);
 
-GalleryContainer.insertAdjacentHTML('beforeend', itemsForGallery);
+galleryContainer.insertAdjacentHTML('beforeend', itemsForGallery);
 
-GalleryContainer.addEventListener('click', onImageClick);
+galleryContainer.addEventListener('click', onImageClick);
 
 function createGallery (items) {
     return items.map(({preview, original, description}) => {
@@ -44,18 +44,23 @@ function fullSizeImgOpen (event) {
         </div>
     `, {
         onShow: (instance) => {
-            GalleryContainer.addEventListener('keydown', fullSizeImgClose);
+            window.addEventListener('keydown', fullSizeImgClose);
         },
         onClose: (instance) => {
-            GalleryContainer.removeEventListener('keydown', fullSizeImgClose);
+            window.removeEventListener('keydown', fullSizeImgClose);
         }
     });
     instance.show()
 
+    const modalWindow = document.querySelector('.modal');
+    modalWindow.addEventListener('click', () => {
+        instance.close();
+    });
+
     function fullSizeImgClose (event) {
         if(event.code === 'Escape') {
             instance.close();
-        }
+    }
     }
 }
     
